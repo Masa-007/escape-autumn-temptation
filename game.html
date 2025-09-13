@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>EAT - ESCAPE AUTUMN TEMPTATION</title>
+<style>
+  body { text-align: center; font-family: sans-serif; }
+  canvas { border: 1px solid #000; display: block; margin: 0 auto; background: #fff8f0; }
+  #gameOver { display: none; color: red; font-size: 36px; }
+</style>
+</head>
+<body>
+<h1>🍂 GAME PLAY 🍂</h1>
+<canvas id="gameCanvas" width="450" height="600"></canvas>
+
+<p>タイマー: <span id="timer">60秒</span></p>
+
+<button id="startBtn">スタート</button>
+
+<div id="gameOver">
+  <p>Oh…秋の魅力に魅了されてしまった!!</p>
+  <p>生存時間: <span id="survivalTime">0秒</span></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -6,6 +6,7 @@ WORKDIR /usr/share/nginx/html
 
 # ゲームファイルをコンテナにコピー
 COPY index.html .
+COPY game.html .
 COPY style.css .
 COPY script.js .
 

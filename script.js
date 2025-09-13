@@ -1,221 +1,143 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍂 Escape Autumn Temptation</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="game-container">
-        <!-- ゲームタイトル -->
-        <header class="game-header">
-            <h1>🍂 秋の誘惑から逃げろ！ 🍂</h1>
-        </header>
-        
-        <!-- ゲーム情報表示 -->
-        <div class="game-info">
-            <div class="score">スコア: <span id="score">0</span></div>
-            <div class="timer">残り時間: <span id="timer">60</span>秒</div>
-        </div>
-        
-        <!-- メインゲーム画面（Canvas使用） -->
-        <main class="game-area">
-            <canvas id="gameCanvas" width="800" height="600"></canvas>
-        </main>
-        
-        <!-- ゲーム操作ボタン -->
-        <div class="game-controls">
-            <button id="startBtn" class="btn btn-primary">ゲーム開始</button>
-            <button id="pauseBtn" class="btn btn-secondary" disabled>一時停止</button>
-            <button id="resetBtn" class="btn btn-danger">リセット</button>
-        </div>
-        
-        <!-- ゲーム説明 -->
-        <div class="game-instructions">
-            <h2>遊び方</h2>
-            <ul>
-                <li>🎯 矢印キーでプレイヤーを移動</li>
-                <li>⚠️ 食べ物に触れた瞬間ゲームオーバー！</li>
-                <li>⏰ 制限時間内に生き延びよう</li>
-                <li>💀 一撃必殺！慎重に動こう</li>
-            </ul>
-        </div>
-        
-        <!-- ゲーム終了画面 -->
-        <div class="game-over" id="gameOver" style="display: none;">
-            <h2>ゲーム終了！</h2>
-            <p>生存時間: <span id="survivalTime">0</span>秒</p>
-            <p>最終スコア: <span id="finalScore">0</span></p>
-            <button id="restartBtn" class="btn btn-primary">もう一度挑戦</button>
-        </div>
-    </div>
-    
-    <script src="script.js"></script>
-</body>
-</html>
-🎨 2. style.css（基本スタイル）
-/* リセットCSS */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+// Canvas
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #ff9a56, #ff6b35);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+// DOM
+const startBtn = document.getElementById("startBtn");
+const gameOverEl = document.getElementById("gameOver");
+const survivalTimeEl = document.getElementById("survivalTime");
+const timerEl = document.getElementById("timer");
 
-.game-container {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    max-width: 900px;
-    width: 100%;
-}
-
-.game-header h1 {
-    color: #ff6b35;
-    margin-bottom: 20px;
-    font-size: 2rem;
-}
-
-.game-info {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-    background: #f8f9fa;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.game-info div {
-    font-weight: bold;
-    color: #333;
-}
-
-.game-area {
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
-}
-
-#gameCanvas {
-    border: 3px solid #ff6b35;
-    border-radius: 10px;
-    background: #87CEEB;
-}
-
-.game-controls {
-    margin: 20px 0;
-}
-
-.btn {
-    padding: 10px 20px;
-    margin: 0 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn-primary {
-    background: #28a745;
-    color: white;
-}
-
-.btn-secondary {
-    background: #6c757d;
-    color: white;
-}
-
-.btn-danger {
-    background: #dc3545;
-    color: white;
-}
-
-.btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.game-instructions {
-    text-align: left;
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 20px 0;
-}
-
-.game-instructions h2 {
-    color: #ff6b35;
-    margin-bottom: 10px;
-}
-
-.game-instructions ul {
-    list-style-position: inside;
-}
-
-.game-instructions li {
-    margin: 5px 0;
-}
-
-.game-over {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
-    #gameCanvas {
-        width: 100%;
-        height: auto;
-    }
-    
-    .game-info {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .game-header h1 {
-        font-size: 1.5rem;
-    }
-}
-🎮 3. script.js（基本構造）
-// ゲーム状態管理
-let gameState = 'ready'; // ready, playing, paused, over
-let score = 0;
+// ゲーム状態
+let gameState = "ready"; // ready, playing, over
 let timeLeft = 60;
 let gameStartTime = 0;
 
-// Canvas要素とコンテキスト
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-
-// プレイヤーオブジェクト
+// プレイヤー（アイコンを2倍サイズ）
 const player = {
-    x: canvas.width / 2,
-    y: canvas.height / 2,
+  x: canvas.width / 2,
+  y: canvas.height - 80,
+  width: 80,
+  height: 60,
+  speed: 10,
+  icon: "🏃",
+};
+
+// 障害物（秋の味覚と固定速度）
+const foods = [];
+const foodData = [
+  { icon: "🍠", speed: 2 },
+  { icon: "🌰", speed: 3 },
+  { icon: "🎃", speed: 4 },
+  { icon: "🍮", speed: 2.5 },
+  { icon: "🐟", speed: 1.5 },
+  { icon: "🥜", speed: 6.5 },
+];
+
+// 障害物生成
+function spawnFood() {
+  const data = foodData[Math.floor(Math.random() * foodData.length)];
+  const food = {
+    x: Math.random() * (canvas.width - 30),
+    y: -30,
     width: 30,
     height: 30,
-    speed: 5,
+    speed: data.speed,
+    icon: data.icon,
+  };
+  foods.push(food);
+}
+
+// 衝突判定（内側にマージン）
+function checkCollision() {
+  const marginX = 20;
+  const marginY = 15;
+
+  for (let food of foods) {
+    if (
+      player.x + marginX < food.x + food.width &&
+      player.x + player.width - marginX > food.x &&
+      player.y + marginY < food.y + food.height &&
+      player.y + player.height - marginY > food.y
+    ) {
+      gameState = "over";
+      gameOverEl.style.display = "block";
+      survivalTimeEl.innerText = 60 - timeLeft + "秒";
+    }
+  }
+}
+
+// 描画
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // プレイヤー描画
+  ctx.font = "60px Arial";
+  ctx.fillText(player.icon, player.x, player.y + 50);
+
+  // 障害物描画
+  foods.forEach((food) => {
+    food.y += food.speed;
+    ctx.font = "30px Arial";
+    ctx.fillText(food.icon, food.x, food.y + food.height);
+  });
+}
+
+// 更新
+function update() {
+  const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+  timeLeft = Math.max(0, 60 - elapsed);
+  timerEl.innerText = timeLeft + "秒";
+
+  checkCollision();
+
+  if (timeLeft <= 0 && gameState === "playing") {
+    gameState = "over";
+    gameOverEl.style.display = "block";
+    survivalTimeEl.innerText = "60秒";
+  }
+}
+
+// ゲームループ
+function gameLoop() {
+  if (gameState === "playing") {
+    update();
+    draw();
+  }
+  requestAnimationFrame(gameLoop);
+}
+
+// キーボード操作
+document.addEventListener("keydown", (e) => {
+  if (gameState !== "playing") return;
+  if (e.key === "ArrowLeft") player.x -= player.speed;
+  if (e.key === "ArrowRight") player.x += player.speed;
+  player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+});
+
+// スタートボタン
+startBtn.addEventListener("click", () => {
+  gameState = "playing";
+  gameStartTime = Date.now();
+  timeLeft = 60;
+  foods.length = 0;
+  player.x = canvas.width / 2;
+  gameOverEl.style.display = "none";
+});
+
+// 障害物自動生成（時間経過で増加）
+setInterval(() => {
+  if (gameState !== "playing") return;
+
+  const elapsed = (Date.now() - gameStartTime) / 1000;
+
+  // 10秒ごとに1個ずつ増える（最大5個まで）
+  let spawnCount = Math.min(5, 1 + Math.floor(elapsed / 10));
+
+  for (let i = 0; i < spawnCount; i++) {
+    spawnFood();
+  }
+}, 1000);
+
+// ゲーム開始
+gameLoop();
