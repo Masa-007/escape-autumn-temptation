@@ -1,4 +1,3 @@
-# docker-compose.yml
 version: '3.8'
 
 services:
@@ -10,5 +9,6 @@ services:
       - ./index.html:/usr/share/nginx/html/index.html
       - ./style.css:/usr/share/nginx/html/style.css
       - ./script.js:/usr/share/nginx/html/script.js
+      - ./game.html:/usr/share/nginx/html/game.html
+      - ./assets:/usr/share/nginx/html/assets:rw
     container_name: autumn-escape-game
-    

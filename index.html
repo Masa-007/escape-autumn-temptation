@@ -1,62 +1,33 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍂 Escape Autumn Temptation</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+  <!-- 外部CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <!-- ゲームタイトル -->
-        <header class="game-header">
-            <h1>🍂 秋の誘惑から逃げろ！ 🍂</h1>
-        </header>
-        
-        <!-- ゲーム情報表示（ライフ削除） -->
-        <div class="game-info">
-            <div class="score">スコア: <span id="score">0</span></div>
-            <div class="timer">残り時間: <span id="timer">60</span>秒</div>
-            <div class="status">状態: <span id="status">準備中</span></div>
-        </div>
-        
-        <!-- メインゲーム画面 -->
-        <main class="game-area" id="gameArea">
-            <div class="player" id="player">🏃‍♂️</div>
-            <!-- 食べ物オブジェクト用コンテナ -->
-            <div class="food-container" id="foodContainer">
-                <!-- 食べ物オブジェクトはJavaScriptで動的に生成 -->
-            </div>
-        </main>
-        
-        <!-- ゲーム操作ボタン -->
-        <div class="game-controls">
-            <button id="startBtn" class="btn btn-primary">ゲーム開始</button>
-            <button id="pauseBtn" class="btn btn-secondary" disabled>一時停止</button>
-            <button id="resetBtn" class="btn btn-danger">リセット</button>
-        </div>
-        
-        <!-- ゲーム説明（1撃死仕様） -->
-        <div class="game-instructions">
-            <h2>遊び方</h2>
-            <ul>
-                <li>🎯 矢印キーでプレイヤーを移動させよう！</li>
-                <li>⚠️ 食べ物に触れた瞬間ゲームオーバー！</li>
-                <li>⏰ 制限時間内に生き延びてスコアを稼ごう！</li>
-                <li>💀 一撃必殺！慎重に動こう！</li>
-            </ul>
-        </div>
-        
-        <!-- ゲーム終了画面 -->
-        <div class="game-over" id="gameOver" style="display: none;">
-            <h2 id="gameOverTitle">ゲーム終了！</h2>
-            <p id="gameOverMessage">誘惑に負けてしまった...</p>
-            <p>生存時間: <span id="survivalTime">0</span>秒</p>
-            <p>最終スコア: <span id="finalScore">0</span></p>
-            <button id="restartBtn" class="btn btn-primary">もう一度挑戦</button>
-        </div>
-    </div>
-    
-    <script src="script.js"></script>
+
+  <!-- サムネイル -->
+  <img src="assets/images/top.jpg" alt="ゲームサムネイル" class="thumbnail">
+
+  <!-- 説明文 -->
+  <p class="top-description">いざ行かん、煩悩の向こう側へ。</p>
+
+  <!-- 遊び方 -->
+  <div class="instructions">
+    <h2>遊び方</h2>
+    <ul>
+      <li>左右の矢印キーでキャラクターを移動させます。</li>
+      <li>落ちてくる秋の食べ物にぶつからないように避けましょう。</li>
+      <li>60秒間逃れることができればゲームクリアです！</li>
+    </ul>
+  </div>
+
+  <!-- ゲームスタート -->
+  <div class="start-button-container">
+    <a class="button" href="game.html">ゲームスタート</a>
+  </div>
 </body>
 </html>
