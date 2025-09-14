@@ -1,12 +1,17 @@
 import { ctx, canvas, timerEl } from "./dom.js";
-import { gameState, setGameState, gameStartTime } from "./gameState.js";
+import {
+  gameState,
+  setGameState,
+  gameStartTime,
+} from "./gameState.js";
 import { player, handleInput, movePlayer } from "./player.js";
-import { foods, spawnFood } from "./foods.js";
+import { foods, spawnFood, drawFoods } from "./foods.js";
 import {
   drawWaterfall,
   setWaterfallImage,
   initWaterfall,
 } from "./waterfall.js";
+import { showGameOver } from "./main.js";
 
 let playerImg; // プレイヤー画像
 let foodSpawnCounter = 0;
@@ -41,8 +46,7 @@ export function draw() {
   drawWaterfall();
 
   // 食べ物描画
-  ctx.font = "30px sans-serif";
-  foods.forEach((food) => ctx.fillText(food.char, food.x, food.y));
+  drawFoods(ctx);
 
   // プレイヤー描画
   if (playerImg) {
@@ -79,34 +83,36 @@ export function update() {
   const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
   currentTimeLeft = Math.max(60 - elapsed, 0);
 
+  // タイムアップ
   if (currentTimeLeft <= 0) {
-    setGameState("gameover");
-    cancelAnimationFrame(loopId);
-    console.log("タイムアップ！");
+    showGameOver(); // バナー表示
     return;
   }
 
+  // プレイヤー移動
   movePlayer(0.5, -12, canvas);
 
+  // 食べ物生成
   foodSpawnCounter++;
   if (foodSpawnCounter > 60) {
     spawnFood(canvas, elapsed);
     foodSpawnCounter = 0;
   }
 
+  // 食べ物移動と衝突判定
   for (let i = foods.length - 1; i >= 0; i--) {
     const food = foods[i];
-    food.y += food.speed;
+    food.move();
 
     const playerCenterX = player.x + player.width / 2;
     const playerCenterY = player.y + player.height / 2;
     const foodCenterX = food.x + food.width / 2;
     const foodCenterY = food.y + food.height / 2;
 
-    const playerRadiusX = (player.width / 2) * 0.4;
-    const playerRadiusY = (player.height / 2) * 0.25;
-    const foodRadiusX = (food.width / 2) * 0.3;
-    const foodRadiusY = (food.height / 2) * 0.3;
+    const playerRadiusX = (player.width / 2) * 0.50;
+    const playerRadiusY = (player.height / 2) * 0.35;
+    const foodRadiusX = (food.width / 2) * 0.40;
+    const foodRadiusY = (food.height / 2) * 0.40;
 
     const dx = playerCenterX - foodCenterX;
     const dy = (playerCenterY - foodCenterY) * (playerRadiusX / playerRadiusY);
@@ -114,12 +120,11 @@ export function update() {
     const isColliding = distance < playerRadiusX + foodRadiusX;
 
     if (isColliding && !player.isInvincible) {
-      setGameState("gameover");
-      cancelAnimationFrame(loopId);
-      console.log("ゲームオーバー！");
+      showGameOver(); // バナー表示
       break;
     }
 
+    // 画面外に出た食べ物を削除
     if (food.y > canvas.height) foods.splice(i, 1);
   }
 }

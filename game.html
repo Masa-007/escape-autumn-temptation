@@ -1,143 +1,216 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>EAT - ESCAPE AUTUMN TEMPTATION</title>
-<style>
-/* ======================= */
-/* 全体 */
-body { 
-  text-align: center; 
-  font-family: 'Segoe UI', 'Helvetica', sans-serif; 
-  background: url('./assets/images/back.image.png') no-repeat center top;
-  background-size: cover; 
-  background-attachment: fixed; 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <title>EAT - ESCAPE AUTUMN TEMPTATION</title>
+    <style>
+      /* ======================= */
+      /* 全体 */
+      body {
+        text-align: center;
+        font-family: "Segoe UI", "Helvetica", sans-serif;
+        background: url("./assets/images/back.image.png") no-repeat center top;
+        background-size: cover;
+        background-attachment: fixed;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+      }
 
-h1 { 
-  margin-bottom: 20px; 
-  color: #5a2e0d; 
-  text-shadow: 2px 2px 4px #fff; 
-}
+      h1 {
+        margin-bottom: 20px;
+        color: #5a2e0d;
+        text-shadow: 2px 2px 4px #fff;
+      }
 
-/* ======================= */
-/* ゲーム画面キャンバス */
-canvas {
-  aspect-ratio: 525 / 600; 
-  width: 90vw;
-  max-width: 525px;
-  border: 1px solid #000;
-  display: block;
-  margin: 15px auto;
-}
+      /* ======================= */
+      /* ゲーム画面キャンバス */
+      canvas {
+        aspect-ratio: 525 / 600;
+        width: 90vw;
+        max-width: 525px;
+        border: 1px solid #000;
+        display: block;
+        margin: 15px auto;
+      }
 
-/* ======================= */
-/* ボタン */
-button {
-  margin: 10px 0; 
-  padding: 12px 30px; 
-  font-size: 18px; 
-  font-weight: bold;
-  color: #fff; 
-  background: linear-gradient(135deg, #ff7e5f, #feb47b);
-  border: none; 
-  border-radius: 10px; 
-  cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
-  transition: all 0.2s ease-in-out;
-}
+      /* ======================= */
+      /* ボタン */
+      button {
+        margin: 10px 0;
+        padding: 12px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease-in-out;
+      }
 
-button:hover { 
-  transform: translateY(-3px); 
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4); 
-}
+      button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      }
 
-button:active { 
-  transform: translateY(1px); 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
-}
+      button:active {
+        transform: translateY(1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
 
-/* ======================= */
-/* ナウなBGMボタンの上に空白 */
-#bgmToggleBtn {
-  margin-top: 60px; 
-}
+      /* ======================= */
+      /* ナウなBGMボタンの上に空白 */
+      #bgmToggleBtn {
+        margin-top: 60px;
+      }
 
-/* ======================= */
-/* タイマー装飾 */
-#timerContainer {
-  display: inline-block;
-  margin: 10px 0;
-  font-size: 30px;
-  font-weight: bold;
-  color: #ff4d4d; 
-  text-shadow: 2px 2px 12px #fff, 0 0 15px #ff9999;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 15px 25px;
-  border-radius: 15px;
-  animation: pulse 1s infinite alternate;
-}
+      /* ======================= */
+      /* タイマー装飾 */
+      #timerContainer {
+        display: inline-block;
+        margin: 10px 0;
+        font-size: 30px;
+        font-weight: bold;
+        color: #ff4d4d;
+        text-shadow: 2px 2px 12px #fff, 0 0 15px #ff9999;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 15px 25px;
+        border-radius: 15px;
+        animation: pulse 1s infinite alternate;
+      }
 
-#timerContainer span {
-  color: #ff4d4d;
-  font-size: 1em;
-}
+      #timerContainer span {
+        color: #ff4d4d;
+        font-size: 1em;
+      }
 
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.85; }
-  100% { transform: scale(1); opacity: 1; }
-}
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 0.85;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
 
-/* ======================= */
-/* ゲームオーバー表示 */
-#gameOver {
-  display: none; 
-  color: red; 
-  font-size: 36px; 
-  margin-top: 20px; 
-  text-align: center; 
-  text-shadow: 2px 2px 3px #fff;
-}
+      /* ======================= */
+      /* ゲームオーバー表示バナー */
+      #gameOver {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 30px 50px;
+        border-radius: 20px;
+        text-align: center;
+        font-family: sans-serif;
+        z-index: 100;
+      }
 
-/* ======================= */
-/* レスポンシブ */
-@media (max-width: 768px) {
-  h1 { font-size: 1.5rem; }
-  button { font-size: 16px; padding: 10px 25px; }
-  #timerContainer { font-size: 40px; }
-  #gameOver { font-size: 28px; }
-}
-</style>
-</head>
-<body>
+      #gameOver button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        border: none;
+        color: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease-in-out;
+      }
 
-  <button id="bgmToggleBtn">ナウなBGM</button>
+      #gameOver button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.4);
+      }
 
-  <canvas id="gameCanvas" width="525" height="600"></canvas>
+      #gameOver a {
+        display: inline-block;
+        margin-top: 10px;
+        background-color: #ff69b4;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: bold;
+      }
 
-  <p id="timerContainer">
-    <span>あと</span>
-    <span id="timer">60秒</span>
-  </p>
+      #gameOver a:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+        transition: 0.2s;
+      }
 
-   <button id="startBtn">スタート</button>
+      /* ======================= */
+      /* レスポンシブ */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 1.5rem;
+        }
+        button {
+          font-size: 16px;
+          padding: 10px 25px;
+        }
+        #timerContainer {
+          font-size: 40px;
+        }
+        #gameOver {
+          font-size: 28px;
+          padding: 20px 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button id="bgmToggleBtn">ナウなBGM</button>
 
-  <div id="gameOver">
-    <p>Oh…秋の魅力に魅了されてしまった!!</p>
-    <p>生存時間: <span id="survivalTime">0秒</span></p>
-  </div>
+    <canvas id="gameCanvas" width="525" height="600"></canvas>
 
-  <img id="playerImg" src="./assets/images/character.png" style="display:none;">
-  <img id="waterfallImg" src="./assets/images/waterfall.png" style="display:none;">
+    <p id="timerContainer">
+      <span>あと</span>
+      <span id="timer">60秒</span>
+    </p>
 
-  <script type="module">
-    import { initGame } from './js/main.js';
-    initGame();
-  </script>
-</body>
+    <button id="startBtn">修行開始ィ!!</button>
+
+    <!-- ======================= -->
+    <!-- ゲームオーバーバナー -->
+    <div id="gameOver">
+      <h2 id="resultText">耐えた時間: 0秒</h2>
+      <div style="margin-top: 15px">
+        <button id="restartBtn">再挑戦するぜｯ!!
+        </button>
+      </div>
+      <a id="shareX" href="#" target="_blank">Xで結果を共有だッ!!</a>
+    </div>
+
+    <img
+      id="playerImg"
+      src="./assets/images/character.png"
+      style="display: none"
+    />
+    <img
+      id="waterfallImg"
+      src="./assets/images/waterfall.png"
+      style="display: none"
+    />
+
+    <script type="module">
+      import { initGame } from "./js/main.js";
+      initGame();
+    </script>
+  </body>
 </html>
