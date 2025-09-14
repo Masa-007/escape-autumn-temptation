@@ -4,24 +4,140 @@
 <meta charset="UTF-8">
 <title>EAT - ESCAPE AUTUMN TEMPTATION</title>
 <style>
-  body { text-align: center; font-family: sans-serif; }
-  canvas { border: 1px solid #000; display: block; margin: 0 auto; background: #fff8f0; }
-  #gameOver { display: none; color: red; font-size: 36px; }
+/* ======================= */
+/* 全体 */
+body { 
+  text-align: center; 
+  font-family: 'Segoe UI', 'Helvetica', sans-serif; 
+  background: url('./assets/images/back.image.png') no-repeat center top;
+  background-size: cover; 
+  background-attachment: fixed; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+h1 { 
+  margin-bottom: 20px; 
+  color: #5a2e0d; 
+  text-shadow: 2px 2px 4px #fff; 
+}
+
+/* ======================= */
+/* ゲーム画面キャンバス */
+canvas {
+  aspect-ratio: 525 / 600; 
+  width: 90vw;
+  max-width: 525px;
+  border: 1px solid #000;
+  display: block;
+  margin: 15px auto;
+}
+
+/* ======================= */
+/* ボタン */
+button {
+  margin: 10px 0; 
+  padding: 12px 30px; 
+  font-size: 18px; 
+  font-weight: bold;
+  color: #fff; 
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  border: none; 
+  border-radius: 10px; 
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover { 
+  transform: translateY(-3px); 
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4); 
+}
+
+button:active { 
+  transform: translateY(1px); 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+}
+
+/* ======================= */
+/* ナウなBGMボタンの上に空白 */
+#bgmToggleBtn {
+  margin-top: 60px; 
+}
+
+/* ======================= */
+/* タイマー装飾 */
+#timerContainer {
+  display: inline-block;
+  margin: 10px 0;
+  font-size: 30px;
+  font-weight: bold;
+  color: #ff4d4d; 
+  text-shadow: 2px 2px 12px #fff, 0 0 15px #ff9999;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px 25px;
+  border-radius: 15px;
+  animation: pulse 1s infinite alternate;
+}
+
+#timerContainer span {
+  color: #ff4d4d;
+  font-size: 1em;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.85; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ======================= */
+/* ゲームオーバー表示 */
+#gameOver {
+  display: none; 
+  color: red; 
+  font-size: 36px; 
+  margin-top: 20px; 
+  text-align: center; 
+  text-shadow: 2px 2px 3px #fff;
+}
+
+/* ======================= */
+/* レスポンシブ */
+@media (max-width: 768px) {
+  h1 { font-size: 1.5rem; }
+  button { font-size: 16px; padding: 10px 25px; }
+  #timerContainer { font-size: 40px; }
+  #gameOver { font-size: 28px; }
+}
 </style>
 </head>
 <body>
-<h1>🍂 GAME PLAY 🍂</h1>
-<canvas id="gameCanvas" width="450" height="600"></canvas>
 
-<p>タイマー: <span id="timer">60秒</span></p>
+  <button id="bgmToggleBtn">ナウなBGM</button>
 
-<button id="startBtn">スタート</button>
+  <canvas id="gameCanvas" width="525" height="600"></canvas>
 
-<div id="gameOver">
-  <p>Oh…秋の魅力に魅了されてしまった!!</p>
-  <p>生存時間: <span id="survivalTime">0秒</span></p>
-</div>
+  <p id="timerContainer">
+    <span>あと</span>
+    <span id="timer">60秒</span>
+  </p>
 
-<script src="script.js"></script>
+   <button id="startBtn">スタート</button>
+
+  <div id="gameOver">
+    <p>Oh…秋の魅力に魅了されてしまった!!</p>
+    <p>生存時間: <span id="survivalTime">0秒</span></p>
+  </div>
+
+  <img id="playerImg" src="./assets/images/character.png" style="display:none;">
+  <img id="waterfallImg" src="./assets/images/waterfall.png" style="display:none;">
+
+  <script type="module">
+    import { initGame } from './js/main.js';
+    initGame();
+  </script>
 </body>
 </html>
