@@ -82,9 +82,9 @@ export function restartGame() {
 
 export function initGame() {
   const playerImg = new Image();
-  playerImg.src = "../assets/images/character.png";
+  playerImg.src = "./assets/images/character.png";
   const waterfallImg = new Image();
-  waterfallImg.src = "../assets/images/waterfall.png";
+  waterfallImg.src = "./assets/images/waterfall.png";
 
   let loadedCount = 0;
   [playerImg, waterfallImg].forEach((img) => {
@@ -132,7 +132,7 @@ export function initGame() {
     }
 
     const text = encodeURIComponent(
-      `私は「EAT」で${finalElapsed}秒耐えました！${plainComment} #EAT #escapeautumntemptation #RUNTEQ #ミニアプリ`
+      `私は「EAT」で${finalElapsed}秒耐えました！${plainComment} #EAT #escapeautumntemptation #RUNTEQ #ミニアプリ https://masa-007.github.io/escape-autumn-temptation/`
     );
     window.open(`https://twitter.com/intent/tweet?text=${text}`, "_blank");
   });
