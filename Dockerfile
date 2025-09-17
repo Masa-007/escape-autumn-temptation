@@ -7,6 +7,8 @@ WORKDIR /usr/share/nginx/html
 COPY index.html .
 COPY game.html .
 COPY style.css .
+COPY clear.html .
+
 
 # JS フォルダごとコピー
 COPY js/ ./js/

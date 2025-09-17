@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>クリア!! - EAT</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", "Helvetica", sans-serif;
+    background: url("./assets/images/end1.png") no-repeat center center fixed;
+    background-size: cover;
+    overflow: hidden;
+    touch-action: manipulation; /* タッチ操作最適化 */
+  }
+
+  #leafCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .fadeImage, #textBox {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 2;
+  }
+
+  #img2 { top: 25%; max-width: 400px; width: 50%; }
+  #img3 { top: 40%; max-width: 400px; width: 50%; }
+  #img4 { top: 45%; max-width: 250px; width: 40%; }
+  #textBox { top: 65%; width: 80%; max-width: 600px; padding: 20px 25px; background: rgba(0,0,0,0.6); color: #fff; font-size: 1.2rem; line-height: 1.6; border-radius: 15px; text-align: center; }
+
+  #endContainer {
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  .decorText {
+    font-family: 'Brush Script MT', cursive;
+    color: #ffd700;
+    font-size: 3rem;
+    margin-bottom: 30px;
+    text-shadow: 3px 3px 7px #000;
+  }
+
+  .actionBtn {
+    display: none;
+    margin: 10px auto;
+    padding: 15px 35px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease-in-out;
+    width: 220px;
+    text-align: center;
+    touch-action: manipulation;
+  }
+
+  #homeBtn { background: linear-gradient(135deg, #ff7e5f, #feb47b); color: white; }
+  #shareLink { background: linear-gradient(135deg, #4c6ef5, #15aabf); color: white; }
+
+  .actionBtn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
+
+  @media (max-width: 768px) {
+    .fadeImage { width: 70%; max-width: 300px; }
+    #img2 { top: 20%; }
+    #img3 { top: 35%; }
+    #img4 { top: 70%; width: 60%; max-width: 200px; }
+    #textBox { font-size: 1rem; padding: 15px; top: 60%; }
+    .decorText { font-size: 2rem; }
+    .actionBtn { width: 70%; font-size: 16px; padding: 12px 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <img id="img2" class="fadeImage" src="./assets/images/end2.png" alt="">
+  <img id="img3" class="fadeImage" src="./assets/images/end3.png" alt="">
+  <img id="img4" class="fadeImage" src="./assets/images/end4.png" alt="">
+
+  <div id="textBox"></div>
+
+  <div id="endContainer">
+    <div id="thankText" class="decorText">GAME CLEAR!! <br>Thank you for playing!!</div>
+    <button id="homeBtn" class="actionBtn">修行に戻る</button>
+    <a id="shareLink" class="actionBtn" target="_blank">Xで感想を共有する</a>
+  </div>
+
+  <canvas id="leafCanvas"></canvas>
+
+  <script>
+    // =======================
+    // キャンバス光エフェクト
+    const canvas = document.getElementById("leafCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const lights = [];
+    const lightCount = 60;
+    for (let i = 0; i < lightCount; i++) {
+      lights.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        speedY: 0.2 + Math.random() * 0.7,
+        speedX: (Math.random() * 0.3) - 0.15,
+        radius: 2 + Math.random() * 3,
+        alpha: 0.5 + Math.random() * 0.5,
+        alphaChange: 0.01 + Math.random() * 0.02
+      });
+    }
+
+    function drawLight(light) {
+      ctx.save();
+      ctx.globalAlpha = light.alpha;
+      const gradient = ctx.createRadialGradient(light.x, light.y, 0, light.x, light.y, light.radius);
+      gradient.addColorStop(0, "rgba(255, 215, 0, 1)");
+      gradient.addColorStop(0.5, "rgba(255, 215, 0, 0.6)");
+      gradient.addColorStop(1, "rgba(255, 215, 0, 0)");
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(light.x, light.y, light.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animateLights() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      lights.forEach(light => {
+        light.y += light.speedY;
+        light.x += light.speedX;
+        light.alpha += light.alphaChange;
+        if (light.alpha > 1 || light.alpha < 0.3) light.alphaChange *= -1;
+        if (light.y > canvas.height) light.y = -light.radius;
+        if (light.x > canvas.width) light.x = 0;
+        if (light.x < 0) light.x = canvas.width;
+        drawLight(light);
+      });
+      requestAnimationFrame(animateLights);
+    }
+    animateLights();
+
+    // =======================
+    // ストーリー制御
+    const textBox = document.getElementById("textBox");
+    const endContainer = document.getElementById("endContainer");
+    const homeBtn = document.getElementById("homeBtn");
+    const shareLink = document.getElementById("shareLink");
+
+    const story = [
+      { text: "*このテキストボックスのみEnterキーorタッチを<br>ゆっくり2回押して進めてください。", img: null },
+      { text: "滝に打たれていたはずの男は気がつくと、木漏れ日の中にいた。<br>「ここが神の境地なのか…?」<br>男は目を瞑りながらつぶやいた。", img: null },
+      { text: "秋の味覚を超えた男は神の境地へと至っていた。<br>ここには何の欲も存在しない。静寂だけがそこに息づいていた。", img: "img2" },
+      { text: "ついに目を開けると、そこにはバスケットに入った<br>赤々と神々しく輝く1粒のリンゴがあった。", img: "img3" },
+      { text: "男はフッと笑った。<br>そしてりんごを手に取り、一口かじった。", img: "img4" },
+      { text: "「ああ、これが秋の味覚か、こんなに美味いとはな。<br>チッ、なぁんだ。また修行のやり直しだぜ。」<br>男はそう言って微笑んだ。", img: null }
+    ];
+
+    let index = 0;
+    textBox.innerHTML = story[0].text;
+    textBox.style.opacity = 1;
+
+    function fadeIn(el) { 
+      el.style.opacity = 1;
+      if(el.tagName === "BUTTON" || el.tagName === "A") el.style.display = "block";
+    }
+    function fadeOut(el) { el.style.opacity = 0; }
+
+    function showStory() {
+      if(index > 0) {
+        const prevImgId = story[index-1].img;
+        if(prevImgId) fadeOut(document.getElementById(prevImgId));
+        fadeOut(textBox);
+      }
+
+      if(index < story.length) {
+        const imgId = story[index].img;
+        if(imgId) fadeIn(document.getElementById(imgId));
+        textBox.innerHTML = story[index].text;
+        fadeIn(textBox);
+        index++;
+      } else {
+        textBox.style.display = "none";
+        endContainer.style.opacity = 1;
+        fadeIn(homeBtn);
+        fadeIn(shareLink);
+        setTweetLink(); // X共有リンク生成
+      }
+    }
+
+    // タッチ/クリックとEnterキーでストーリー進行
+    function handleAdvance() { showStory(); }
+    document.body.addEventListener("click", handleAdvance);
+    document.body.addEventListener("touchstart", handleAdvance);
+    document.body.addEventListener("keydown", (e) => { if(e.key === "Enter") handleAdvance(); });
+
+    homeBtn.addEventListener("click", () => { window.location.href = "index.html"; });
+
+    function setTweetLink() {
+      const text = "完全クリアしてエンディングを観た!!";
+      const hashtags = ["ETA","EscapeAutumnTemptation","RUNTEQ","ミニアプリ"];
+      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=${encodeURIComponent(hashtags.join(','))}`;
+      shareLink.href = url;
+    }
+  </script>
+</body>
+</html>

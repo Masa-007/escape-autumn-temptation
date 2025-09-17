@@ -1,3 +1,5 @@
+// player.js
+
 export const player = {
   x: 0,
   y: 0,
@@ -9,44 +11,50 @@ export const player = {
   angle: 0,
   isRotating: false,
   targetAngle: 0,
-  rotationSpeed: 0.1,
+  rotationSpeed: 0.2,
 
-  // --- 追加 ---
-  jumpCount: 0, // ジャンプ回数カウント
-  isInvincible: false, // 
-  initialX: 0, // 初期位置X
-  initialY: 0, // 初期位置Y
-  isGlowing: false, // 光る演出用フラグ
+
+  startX: 0,
+  startY: 0,
+  jumpCount: 0,
+  maxJumpCount: 15,
+  isInvincible: false, 
+  isGlowing: false,
+  isDebugInvincible: false, 
+  movedBeforeJump: false,
 };
 
 export const keys = { left: false, right: false, up: false, down: false };
+let touchStartY = 0;
 
+// キーボード入力
 export function handleInput(e, isDown) {
-  if (
-    e.code === "ArrowUp" ||
-    e.code === "ArrowDown" ||
-    e.code === "ArrowLeft" ||
-    e.code === "ArrowRight"
-  ) {
-    e.preventDefault();
-  }
-
   switch (e.code) {
     case "ArrowLeft":
       keys.left = isDown;
+      if (isDown && !player.isJumping) player.movedBeforeJump = true;
       break;
     case "ArrowRight":
       keys.right = isDown;
+      if (isDown && !player.isJumping) player.movedBeforeJump = true;
       break;
     case "ArrowUp":
+    case "Space":
       keys.up = isDown;
       break;
     case "ArrowDown":
       keys.down = isDown;
       break;
   }
+  if (
+    ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"].includes(
+      e.code
+    )
+  )
+    e.preventDefault();
 }
 
+// 初期位置にリセット
 export function resetPlayer(canvas) {
   player.x = canvas.width / 2 - player.width / 2;
   player.y = canvas.height - player.height;
@@ -54,47 +62,59 @@ export function resetPlayer(canvas) {
   player.isJumping = false;
   player.angle = 0;
   player.isRotating = false;
-  player.targetAngle = 0;
-  keys.left = keys.right = keys.down = keys.up = false;
 
-  
+  player.startX = player.x;
+  player.startY = player.y;
   player.jumpCount = 0;
   player.isInvincible = false;
   player.isGlowing = false;
-  player.initialX = player.x;
-  player.initialY = player.y;
+  player.isDebugInvincible = false;
+  player.movedBeforeJump = false;
 }
 
-export function movePlayer(gravity, jumpPower, canvas) {
-  // 左右移動
-  if (keys.left) player.x -= player.speed;
-  if (keys.right) player.x += player.speed;
+// プレイヤー移動
+export function movePlayer(gravity = 0.5, jumpPower = 12, canvas) {
+  let moved = false;
 
-  // 動いたら無敵解除
-  if (player.isInvincible && Math.abs(player.x - player.initialX) > 0.1) {
-    player.isInvincible = false;
-    player.isGlowing = false;
-    console.log("無敵解除！");
+  if (keys.left) {
+    player.x -= player.speed;
+    moved = true;
+  }
+  if (keys.right) {
+    player.x += player.speed;
+    moved = true;
   }
 
   if (player.x < 0) player.x = 0;
   if (player.x + player.width > canvas.width)
     player.x = canvas.width - player.width;
 
-  // ジャンプ
+  // ジャンプ処理
   if (keys.up && !player.isJumping) {
-    player.vy = jumpPower;
+    player.vy = -jumpPower;
     player.isJumping = true;
-    player.jumpCount++;
 
-
-    if (player.jumpCount >= 15 && Math.abs(player.x - player.initialX) < 0.1) {
-      player.isInvincible = true;
-      player.isGlowing = true;
+    // 初期位置から移動せずにジャンプした場合のみカウント
+    if (!player.movedBeforeJump) {
+      player.jumpCount++;
+      if (player.jumpCount >= player.maxJumpCount) {
+        player.isInvincible = true;
+        player.isGlowing = true;
+      }
     }
   }
 
-  // 重力
+
+  if (player.isInvincible && moved) {
+    player.isInvincible = false;
+    player.isGlowing = false;
+  }
+
+  if (keys.down && !player.isRotating) {
+    player.isRotating = true;
+    player.targetAngle += 2 * Math.PI;
+  }
+
   player.vy += gravity;
   player.y += player.vy;
 
@@ -102,12 +122,6 @@ export function movePlayer(gravity, jumpPower, canvas) {
     player.y = canvas.height - player.height;
     player.vy = 0;
     player.isJumping = false;
-  }
-
-  // 下キー回転
-  if (keys.down && !player.isRotating) {
-    player.isRotating = true;
-    player.targetAngle = player.angle + 2 * Math.PI;
   }
 
   if (player.isRotating) {
@@ -119,5 +133,69 @@ export function movePlayer(gravity, jumpPower, canvas) {
     } else {
       player.angle += diff * player.rotationSpeed;
     }
+  }
+}
+
+// タッチ開始
+export function touchStartHandler(e, canvas) {
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+
+  if (
+    x >= player.x &&
+    x <= player.x + player.width &&
+    y >= player.y &&
+    y <= player.y + player.height &&
+    !player.isJumping
+  ) {
+    player.vy = -12;
+    player.isJumping = true;
+
+    if (!player.movedBeforeJump) {
+      player.jumpCount++;
+      if (player.jumpCount >= player.maxJumpCount) {
+        player.isInvincible = true;
+        player.isGlowing = true;
+      }
+    }
+  }
+
+  touchStartY = y;
+}
+
+// タッチ移動
+export function touchMoveHandler(e, canvas) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const x = touch.clientX - rect.left;
+
+  const moved = player.x !== x - player.width / 2;
+  player.x = x - player.width / 2;
+
+  if (player.x < 0) player.x = 0;
+  if (player.x + player.width > canvas.width)
+    player.x = canvas.width - player.width;
+
+  if (!player.isJumping && moved) player.movedBeforeJump = true;
+
+
+  if (player.isInvincible && moved) {
+    player.isInvincible = false;
+    player.isGlowing = false;
+  }
+}
+
+// タッチ終了
+export function touchEndHandler(e, canvas) {
+  const touch = e.changedTouches[0];
+  const rect = canvas.getBoundingClientRect();
+  const endY = touch.clientY - rect.top;
+
+  if (endY - touchStartY > 30 && !player.isRotating) {
+    player.isRotating = true;
+    player.targetAngle += 2 * Math.PI;
   }
 }

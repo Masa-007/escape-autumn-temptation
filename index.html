@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-  <!-- 外部CSS -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EAT - ESCAPE AUTUMN TEMPTATION</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,27 +12,91 @@
   <img src="assets/images/top.jpg" alt="ゲームサムネイル" class="thumbnail">
 
   <!-- 説明文 -->
-  <p class="top-description">いざ行かん、煩悩を超えた向こう側へ。</p>
+  <p class="top-description">
+    いざ行かん、煩悩を超えた向こう側へ。
+  </p>
 
-  <!-- 遊び方 -->
-  <div class="instructions">
-    <h2>遊び方</h2>
-    <ul>
-      <li>左右の矢印キーでキャラクターを移動させます。</li>
-
-      <li>落ちてくる秋の食べ物にぶつからないように避けましょう。</li>
-
-      <li>60秒間逃れることができればゲームクリアです！</li>
-
-      <li>BGMは2種類！気になる場合はOFFにしてから始めてください。</li>
-
-      <li>スタートボタンを押してゲームを始めましょう！</li>
-    </ul>
-  </div>
-
-  <!-- ゲームスタート -->
+  <!-- スタートボタン -->
   <div class="start-button-container">
-    <a class="button" href="game.html">ゲームスタート</a>
+    <a class="button" href="game.html" id="startButton">スタートボタン</a>
   </div>
+
+  <!-- フリップカード -->
+  <div class="flip-card" id="flipCard">
+    <div class="flip-card-inner">
+      <!-- 遊び方（表） -->
+      <div class="flip-card-front">
+        <div class="flip-header">
+          <h2>遊び方</h2>
+          <button class="flip-toggle" id="showInstructions">あらすじを読む ></button>
+        </div>
+        <ul>
+          <li>左右の矢印キーでキャラクターを移動させます。</li>
+          <li>落ちてくる秋の食べ物にぶつからないように避けましょう。</li>
+          <li>60秒間逃れることができればゲームクリアです！</li>
+          <li>BGMは2種類。気になる場合はOFFにしてから始めてください。</li>
+          <li>プレイ中はEnterキーでスタート、リスタートが可能です。</li>
+        </ul>
+      </div>
+
+      <!-- あらすじ（裏） -->
+      <div class="flip-card-back">
+        <div class="flip-header">
+          <h2>あらすじ</h2>
+          <button class="flip-toggle" id="showStoryBack">遊び方を読む ></button>
+        </div>
+        <p>男は最強を目指していた。<br>
+        食欲もまた、弱き己の心の敵だと信じていた。</p>
+
+        <p>山奥にひっそりと流れる滝。<br>
+        その水面に映るのは己の心の欲望の化身。<br>
+        栗や焼き芋、赤いリンゴなど、次々と現れる秋の味覚の幻影。</p>
+
+        <p>男は衝動に耐え、手を伸ばさずに立ち尽くす。<br>
+        流れ落ちる誘惑を避け、己を鍛える修行が始まる。</p>
+
+        <p>冷たい水が体を打ち、心を刺激する。滝の誘惑に耐え抜けば、<br>
+        最強の心が手に入ると信じて。</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const startButton = document.getElementById("startButton");
+    const flipCardInner = document.querySelector("#flipCard .flip-card-inner");
+    const showInstructionsBtn = document.getElementById("showInstructions");
+    const showStoryBackBtn = document.getElementById("showStoryBack");
+
+    // =========================
+    // ゲームスタート（PC: Enter / スマホ: タップ）
+    function startGame() {
+      window.location.href = startButton.href;
+    }
+    document.body.addEventListener("keydown", (e) => {
+      if(e.key === "Enter") startGame();
+    });
+    startButton.addEventListener("click", startGame);
+    startButton.addEventListener("touchstart", startGame);
+
+    // =========================
+    // フリップカード切替（クリック＋タッチ対応）
+    function flipToBack() {
+      flipCardInner.classList.add("flipped");
+    }
+    function flipToFront() {
+      flipCardInner.classList.remove("flipped");
+    }
+
+    showInstructionsBtn.addEventListener("click", flipToBack);
+    showStoryBackBtn.addEventListener("click", flipToFront);
+
+    showInstructionsBtn.addEventListener("touchstart", flipToBack);
+    showStoryBackBtn.addEventListener("touchstart", flipToFront);
+
+    // =========================
+    // スマホでタップしてもテキスト選択やズームが起きないように
+    document.body.style.touchAction = "manipulation";
+  </script>
+
 </body>
 </html>
