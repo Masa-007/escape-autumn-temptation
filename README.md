@@ -13,6 +13,7 @@
 - BGM:SUDO AI
 - 背景画像:Canva AI
 - Google Analytics
+- Docker
 ## 📝 開発予定機能
 - [×] プレイヤーの移動機能
 - [×] 食べ物オブジェクトの配置
