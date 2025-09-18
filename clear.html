@@ -155,8 +155,9 @@
 
   const textBox = document.getElementById("textBox");
   const endContainer = document.getElementById("endContainer");
+  const shareLink = document.getElementById("shareLink");
   const story=[
-    {text:"*このテキストボックスのみEnterキーorタッチで進めてください。",img:null},
+    {text:"*Enterキーorタッチで進めてください。",img:null},
     {text:"滝に打たれていたはずの男は気がつくと、木漏れ日の中にいた。<br>「ここが神の境地なのか…?」<br>男は目を瞑りながらつぶやいた。",img:null},
     {text:"秋の味覚を超えた男は神の境地へと至っていた。<br>ここには何の欲も存在しない。静寂だけがそこに息づいていた。",img:"img2"},
     {text:"ついに目を開けると、そこにはバスケットに入った<br>赤々と神々しく輝く1粒のリンゴがあった。",img:"img3"},
@@ -168,43 +169,33 @@
   let lastImg = null;
   let waitingForFinalClick = false;
 
-  // 初期表示
   textBox.innerHTML = story[0].text;
   textBox.style.opacity = 1;
   textBox.style.display = "flex";
-  index = 1; // すでに最初のテキストを表示済み
+  index = 1;
 
   function showStory(){
     if(index < story.length){
-      // 前の画像とテキストを同時にフェードアウト
       textBox.style.opacity = 0;
-      if(lastImg){
-        lastImg.style.opacity = 0;
-      }
+      if(lastImg) lastImg.style.opacity = 0;
 
       setTimeout(()=> {
         if(lastImg) lastImg.style.display = "none";
 
-        // 新しい画像とテキスト
         const imgId = story[index].img;
         if(imgId){
           const imgEl = document.getElementById(imgId);
           imgEl.style.display = "block";
           setTimeout(()=>{ imgEl.style.opacity = 1; }, 50);
           lastImg = imgEl;
-        } else {
-          lastImg = null;
-        }
+        } else { lastImg = null; }
+
         textBox.innerHTML = story[index].text;
         textBox.style.opacity = 1;
         textBox.style.display = "flex";
 
         index++;
-
-        if(index === story.length){
-          // 最後のリンク表示待ち
-          waitingForFinalClick = true;
-        }
+        if(index === story.length) waitingForFinalClick = true;
       }, 800);
     }
   }
@@ -214,7 +205,6 @@
     if(e.type==="touchstart"){e.preventDefault();}
 
     if(waitingForFinalClick){
-      // 最後のリンク表示時にテキストと画像を消す
       textBox.style.opacity = 0;
       if(lastImg) lastImg.style.opacity = 0;
       setTimeout(()=>{
@@ -234,6 +224,13 @@
   document.body.addEventListener("keydown", (e)=>{if(e.key==="Enter") handleAdvance(e);});
 
   document.getElementById("homeBtn").addEventListener("click", ()=>{window.location.href="index.html";});
+
+  // ================= Xシェア用イベント =================
+  shareLink.addEventListener("click", (e)=>{
+    e.preventDefault();
+    const url = shareLink.href;
+    window.open(url, "_blank");
+  });
 </script>
 </body>
 </html>
