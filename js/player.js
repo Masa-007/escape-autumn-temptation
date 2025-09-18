@@ -1,5 +1,3 @@
-// player.js
-
 export const player = {
   x: 0,
   y: 0,
@@ -13,14 +11,13 @@ export const player = {
   targetAngle: 0,
   rotationSpeed: 0.2,
 
-
   startX: 0,
   startY: 0,
   jumpCount: 0,
   maxJumpCount: 15,
-  isInvincible: false, 
+  isInvincible: false,
   isGlowing: false,
-  isDebugInvincible: false, 
+  isDebugInvincible: false,
   movedBeforeJump: false,
 };
 
@@ -94,7 +91,6 @@ export function movePlayer(gravity = 0.5, jumpPower = 12, canvas) {
     player.vy = -jumpPower;
     player.isJumping = true;
 
-    // 初期位置から移動せずにジャンプした場合のみカウント
     if (!player.movedBeforeJump) {
       player.jumpCount++;
       if (player.jumpCount >= player.maxJumpCount) {
@@ -103,7 +99,6 @@ export function movePlayer(gravity = 0.5, jumpPower = 12, canvas) {
       }
     }
   }
-
 
   if (player.isInvincible && moved) {
     player.isInvincible = false;
@@ -165,9 +160,11 @@ export function touchStartHandler(e, canvas) {
   touchStartY = y;
 }
 
-// タッチ移動
+// タッチ移動（空中では横移動不可）
 export function touchMoveHandler(e, canvas) {
   e.preventDefault();
+  if (player.isJumping) return; // 空中は固定
+
   const touch = e.touches[0];
   const rect = canvas.getBoundingClientRect();
   const x = touch.clientX - rect.left;
@@ -179,8 +176,7 @@ export function touchMoveHandler(e, canvas) {
   if (player.x + player.width > canvas.width)
     player.x = canvas.width - player.width;
 
-  if (!player.isJumping && moved) player.movedBeforeJump = true;
-
+  if (moved) player.movedBeforeJump = true;
 
   if (player.isInvincible && moved) {
     player.isInvincible = false;
