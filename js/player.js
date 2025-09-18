@@ -195,3 +195,4 @@ export function touchEndHandler(e, canvas) {
     player.targetAngle += 2 * Math.PI;
   }
 }
+
