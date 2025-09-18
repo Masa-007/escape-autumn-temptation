@@ -67,7 +67,6 @@
     const showInstructionsBtn = document.getElementById("showInstructions");
     const showStoryBackBtn = document.getElementById("showStoryBack");
 
-    // =========================
     // ゲームスタート（PC: Enter / スマホ: タップ）
     function startGame() {
       window.location.href = startButton.href;
@@ -78,7 +77,7 @@
     startButton.addEventListener("click", startGame);
     startButton.addEventListener("touchstart", startGame);
 
-    // =========================
+
     // フリップカード切替（クリック＋タッチ対応）
     function flipToBack() {
       flipCardInner.classList.add("flipped");
@@ -93,7 +92,6 @@
     showInstructionsBtn.addEventListener("touchstart", flipToBack);
     showStoryBackBtn.addEventListener("touchstart", flipToFront);
 
-    // =========================
     // スマホでタップしてもテキスト選択やズームが起きないように
     document.body.style.touchAction = "manipulation";
   </script>

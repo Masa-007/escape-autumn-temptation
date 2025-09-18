@@ -127,7 +127,7 @@ export function stopGameLoop() {
   if (loopId) cancelAnimationFrame(loopId);
 }
 
-// --- 開始 ---
+// 開始 
 export function startGameLoop() {
   initPlayer();
   gameLoop();
