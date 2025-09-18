@@ -45,7 +45,7 @@ body {
   font-weight: bold;
 }
 
-/* ======================= */
+
 /* フリップカード */
 .flip-card {
   background-color: transparent;
@@ -120,7 +120,7 @@ body {
   padding: 0 10px;
 }
 
-/* ======================= */
+
 /* タイトル右寄せ調整 */
 .flip-header {
   display: flex;
@@ -218,7 +218,6 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-/* ======================= */
 /* レスポンシブ */
 @media (max-width: 768px) {
   .top-description { font-size: 1.1rem; }

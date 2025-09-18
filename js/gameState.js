@@ -27,13 +27,6 @@ export function getGameState() {
 
 // ゲームリセット
 
-/**
- * ゲームをリセット
- * - プレイヤーを初期位置に戻す
- * - 落ちているフルーツをリセット
- * - タイマーをリセット
- * - ゲーム状態を "playing" に
- */
 export function resetGame() {
   gameState = "playing";
   gameStartTime = Date.now(); // ゲーム開始時刻をセット
@@ -42,8 +35,6 @@ export function resetGame() {
   resetPlayer(canvas); // プレイヤーを下中央に初期化
   resetFoods(); // フルーツ配列をリセット
 }
-
-// 経過時間取得
 
 /**
  * ゲーム開始からの経過時間を秒で取得

@@ -132,7 +132,7 @@ export function initGame() {
     }
 
     const text = encodeURIComponent(
-      `私は「EAT」で${finalElapsed}秒耐えました！${plainComment} #EAT #escapeautumntemptation #RUNTEQ  #ミニアプリWeek2025 https://masa-007.github.io/escape-autumn-temptation/`
+      `私は「EAT」で${finalElapsed}秒耐えました！${plainComment} #EAT~EscapeAutumnTemptation #RUNTEQ  #ミニアプリWeek https://masa-007.github.io/escape-autumn-temptation/`
     );
     window.open(`https://twitter.com/intent/tweet?text=${text}`, "_blank");
   });
