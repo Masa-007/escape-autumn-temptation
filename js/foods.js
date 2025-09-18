@@ -1,3 +1,5 @@
+// foods.js
+
 // グローバル配列
 export const foods = [];
 
@@ -15,7 +17,7 @@ const bikiniData = { speed: 3, char: "👙", size: 50, isDamage: false };
 const pumpkinPieData = { speed: 2, char: "🥧", size: 80, isDamage: true };
 const absurdData = { speed: 2, char: "世の理不尽", size: 80, isDamage: true };
 
-// 基底クラス（光るフード）
+// 基底クラス（光らない）
 class Food {
   constructor(data, canvas, elapsedSeconds) {
     this.char = data.char;
@@ -24,7 +26,6 @@ class Food {
     this.height = data.size;
     this.x = Math.random() * Math.max(0, canvas.width - this.width);
     this.y = -this.height;
-    this.glowPhase = Math.random() * Math.PI * 2;
     this.isDamage = data.isDamage ?? true;
 
     // 30秒経過後に揺れる
@@ -49,20 +50,11 @@ class Food {
     const cx = this.x + this.width / 2;
     const cy = this.y + this.height / 2;
     const fontSize = Math.floor(this.width * 0.8);
-    const glowOffset = Math.sin(this.glowPhase) * 2;
-    this.glowPhase += 0.1;
 
     ctx.save();
     ctx.font = `${fontSize}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-
-    ctx.shadowColor = "#FF69B4";
-    ctx.shadowBlur = 8 + glowOffset;
-    ctx.lineWidth = 2;
-
-    ctx.strokeStyle = "#FF69B4";
-    ctx.strokeText(this.char, cx, cy);
     ctx.fillStyle = "white";
     ctx.fillText(this.char, cx, cy);
     ctx.restore();
@@ -100,12 +92,12 @@ class BikiniFood {
   }
 }
 
-// 特殊フードクラス（光るフード）
+// 特殊フードクラス（光らない）
 class SpecialFood extends Food {}
 
 // フード生成
 export function spawnFood(canvas, elapsedSeconds) {
-  let spawnAmount = 2;
+  let spawnAmount = 1; // 最初は少なめ
   if (elapsedSeconds >= 65) spawnAmount = 5;
   else if (elapsedSeconds >= 50) spawnAmount = 4;
   else if (elapsedSeconds >= 30) spawnAmount = 3;

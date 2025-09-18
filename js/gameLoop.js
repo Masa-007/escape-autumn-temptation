@@ -4,9 +4,13 @@ import { gameState, gameStartTime } from "./gameState.js";
 import { player, handleInput, movePlayer, resetPlayer } from "./player.js";
 import { foods, spawnFood, drawFoods } from "./foods.js";
 import { showGameOver } from "./main.js";
+import {
+  initWaterfall,
+  drawWaterfall,
+  setWaterfallImage as setWFImage,
+} from "./waterfall.js";
 
 let playerImg;
-let waterfallImg;
 let foodSpawnCounter = 0;
 let loopId;
 let currentTimeLeft = 60;
@@ -25,29 +29,19 @@ export function setPlayerImage(img) {
   playerImg = img;
 }
 
-// --- waterfall画像セット ---
-export function setWaterfallImage(img) {
-  waterfallImg = img;
-}
-
 // --- 画像セットまとめ ---
 export function setImages(pImg, wImg) {
   setPlayerImage(pImg);
-  setWaterfallImage(wImg);
+  setWFImage(wImg); // waterfall.js に画像セット
+  initWaterfall(); // 粒初期化
   initPlayer();
-}
-
-// --- waterfall描画 ---
-function drawWaterfall(ctx) {
-  if (!waterfallImg) return; // 画像未ロード時は描画しない
-  ctx.drawImage(waterfallImg, 0, 0, canvas.width, canvas.height);
 }
 
 // --- 描画 ---
 export function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  drawWaterfall(ctx); // waterfall描画
+  drawWaterfall(); // waterfall.js の描画
   drawFoods(ctx); // フード描画
 
   if (playerImg) {
@@ -55,7 +49,6 @@ export function draw() {
     ctx.translate(player.x + player.width / 2, player.y + player.height / 2);
     ctx.rotate(player.angle);
 
-    // invincible状態のみshadow
     ctx.shadowColor =
       player.isInvincible && player.isGlowing ? "yellow" : "transparent";
     ctx.shadowBlur = player.isInvincible && player.isGlowing ? 20 : 0;
