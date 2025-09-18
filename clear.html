@@ -12,6 +12,11 @@
     background-size: cover;
     overflow: hidden;
     touch-action: manipulation;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 画面中央に配置 */
+    flex-direction: column;
   }
 
   #leafCanvas {
@@ -24,7 +29,7 @@
     z-index: 1;
   }
 
-  .fadeImage, #textBox {
+  .fadeImage {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -38,9 +43,9 @@
   #img4 { top: 45%; max-width: 250px; width: 40%; display:none; }
 
   #textBox {
-    top: 65%;
     width: 80%;
     max-width: 600px;
+    min-height: 150px;
     padding: 20px 25px;
     background: rgba(0,0,0,0.6);
     color: #fff;
@@ -48,21 +53,35 @@
     line-height: 1.6;
     border-radius: 15px;
     text-align: center;
+
+    /* 画面下寄せに近く配置 */
+    position: absolute;
+    bottom: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   /* ===================== 最後のボタンコンテナ ===================== */
   #endContainer {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 30px; /* ボタン間隔を広めに */
     opacity: 0;
     z-index: 2;
+    margin-top: 20px; /* テキストボックスとの余白 */
+    /* 画面中央に配置 */
+  }
+
+  /* ボタン間隔を margin で設定 */
+  #endContainer .actionBtn + .actionBtn {
+    margin-top: 30px;
   }
 
   .decorText {
@@ -71,10 +90,13 @@
     font-size: 3rem;
     text-align: center;
     text-shadow: 3px 3px 7px #000;
+    margin-bottom: 30px;
   }
 
   .actionBtn {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 15px 35px;
     font-size: 18px;
     font-weight: bold;
@@ -82,7 +104,7 @@
     cursor: pointer;
     text-decoration: none;
     border: none;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     transition: all 0.2s ease-in-out;
     width: 220px;
     text-align: center;
@@ -91,7 +113,7 @@
   #homeBtn { background: linear-gradient(135deg, #ff7e5f, #feb47b); color: white; }
   #shareLink { background: linear-gradient(135deg, #4c6ef5, #15aabf); color: white; }
 
-  .actionBtn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
+  .actionBtn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
 
   /* ===================== スマホ用 ===================== */
   @media (max-width: 768px) {
@@ -99,17 +121,10 @@
     #img2 { top: 70%; }
     #img3 { top: 70%; }
     #img4 { top: 56%; width: 60%; max-width: 200px; }
-    #textBox { font-size: 1rem; padding: 15px; top: 60%; }
-    .decorText { font-size: 2rem; }
-    #endContainer {
-      top: 50%;
-      gap: 20px;
-    }
-    .actionBtn {
-      width: 70%;
-      font-size: 16px;
-      padding: 12px 20px;
-    }
+    #textBox { font-size: 1rem; padding: 15px; min-height: 150px; bottom: 18%; }
+    .decorText { font-size: 2rem; margin-bottom: 20px; }
+    #endContainer .actionBtn + .actionBtn { margin-top: 20px; }
+    .actionBtn { width: 70%; font-size: 16px; padding: 12px 20px; }
   }
 </style>
 </head>
@@ -184,7 +199,7 @@
     }
     animateLights();
 
-    // ストーリー制御
+    // ===================== ストーリー制御 =====================
     const textBox = document.getElementById("textBox");
     const endContainer = document.getElementById("endContainer");
     const homeBtn = document.getElementById("homeBtn");
@@ -203,10 +218,7 @@
     textBox.innerHTML = story[0].text;
     textBox.style.opacity = 1;
 
-    function fadeIn(el) {
-      el.style.display = "block";
-      el.style.opacity = 1;
-    }
+    function fadeIn(el) { el.style.display = "flex"; el.style.opacity = 1; }
     function fadeOut(el) { el.style.opacity = 0; }
 
     function showStory() {
@@ -223,12 +235,9 @@
         fadeIn(textBox);
         index++;
       } else {
-        // 最後の演出
         textBox.style.display = "none";
         endContainer.style.display = "flex";
         fadeIn(endContainer);
-        fadeIn(homeBtn);
-        fadeIn(shareLink);
       }
     }
 
