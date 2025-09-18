@@ -26,7 +26,6 @@ export function getGameState() {
 }
 
 // ゲームリセット
-
 export function resetGame() {
   gameState = "playing";
   gameStartTime = Date.now(); // ゲーム開始時刻をセット
