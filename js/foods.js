@@ -17,7 +17,6 @@ const bikiniData = { speed: 3, char: "👙", size: 50, isDamage: false };
 const pumpkinPieData = { speed: 2, char: "🥧", size: 80, isDamage: true };
 const absurdData = { speed: 2, char: "世の理不尽", size: 80, isDamage: true };
 
-// 基底クラス（光らない）
 class Food {
   constructor(data, canvas, elapsedSeconds) {
     this.char = data.char;
