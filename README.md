@@ -1,4 +1,4 @@
-# Escape Autumn Temptation 🍂🎮
+# ETA Escape Autumn Temptation 🍂🎮
 
 秋の食欲の誘惑から逃げる脱出ゲーム
 
