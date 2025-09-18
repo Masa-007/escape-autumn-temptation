@@ -3,56 +3,62 @@ import { ctx, canvas, timerEl } from "./dom.js";
 import { gameState, gameStartTime } from "./gameState.js";
 import { player, handleInput, movePlayer, resetPlayer } from "./player.js";
 import { foods, spawnFood, drawFoods } from "./foods.js";
-import {
-  drawWaterfall,
-  setWaterfallImage,
-  initWaterfall,
-} from "./waterfall.js";
 import { showGameOver } from "./main.js";
 
 let playerImg;
+let waterfallImg;
 let foodSpawnCounter = 0;
 let loopId;
 let currentTimeLeft = 60;
 
-// プレイヤー画像セット
-export function setPlayerImage(img) {
-  playerImg = img;
-}
-
-// 画像セット
-export function setImages(pImg, wImg) {
-  setPlayerImage(pImg);
-  setWaterfallImage(wImg);
-  initWaterfall();
-}
-
-// キーイベント
+// --- キーイベント ---
 window.addEventListener("keydown", (e) => handleInput(e, true));
 window.addEventListener("keyup", (e) => handleInput(e, false));
 
-// --- ゲーム開始前にプレイヤー初期化 ---
+// --- プレイヤー初期化 ---
 export function initPlayer() {
   resetPlayer(canvas);
 }
 
-// 描画
+// --- プレイヤー画像セット ---
+export function setPlayerImage(img) {
+  playerImg = img;
+}
+
+// --- waterfall画像セット ---
+export function setWaterfallImage(img) {
+  waterfallImg = img;
+}
+
+// --- 画像セットまとめ ---
+export function setImages(pImg, wImg) {
+  setPlayerImage(pImg);
+  setWaterfallImage(wImg);
+  initPlayer();
+}
+
+// --- waterfall描画 ---
+function drawWaterfall(ctx) {
+  if (!waterfallImg) return; // 画像未ロード時は描画しない
+  ctx.drawImage(waterfallImg, 0, 0, canvas.width, canvas.height);
+}
+
+// --- 描画 ---
 export function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawWaterfall();
-  drawFoods(ctx);
+
+  drawWaterfall(ctx); // waterfall描画
+  drawFoods(ctx); // フード描画
 
   if (playerImg) {
     ctx.save();
     ctx.translate(player.x + player.width / 2, player.y + player.height / 2);
     ctx.rotate(player.angle);
 
-    if (player.isInvincible && player.isGlowing) {
-      ctx.shadowColor = "yellow";
-      ctx.shadowBlur = 20;
-    } else {
-      ctx.shadowBlur = 0;
-    }
+    // invincible状態のみshadow
+    ctx.shadowColor =
+      player.isInvincible && player.isGlowing ? "yellow" : "transparent";
+    ctx.shadowBlur = player.isInvincible && player.isGlowing ? 20 : 0;
 
     ctx.drawImage(
       playerImg,
@@ -67,7 +73,7 @@ export function draw() {
   timerEl.textContent = `${currentTimeLeft}秒`;
 }
 
-// 更新
+// --- 更新 ---
 export function update() {
   if (gameState !== "playing") return;
 
@@ -87,27 +93,23 @@ export function update() {
     foodSpawnCounter = 0;
   }
 
-  // 当たり判定
+  // 当たり判定（平方距離）
   for (let i = foods.length - 1; i >= 0; i--) {
     const food = foods[i];
     food.move();
 
-    const playerCenterX = player.x + player.width / 2;
-    const playerCenterY = player.y + player.height / 2;
-    const foodCenterX = food.x + food.width / 2;
-    const foodCenterY = food.y + food.height / 2;
+    const dx = player.x + player.width * 0.25 - (food.x + food.width * 0.2);
+    const dy =
+      (player.y + player.height * 0.175 - (food.y + food.height * 0.2)) *
+      (0.5 / 0.35);
+    const distSq = dx * dx + dy * dy;
+    const radiusSum = player.width * 0.25 + food.width * 0.2;
 
-    const playerRadiusX = (player.width / 2) * 0.5;
-    const playerRadiusY = (player.height / 2) * 0.35;
-    const foodRadiusX = (food.width / 2) * 0.4;
-    const foodRadiusY = (food.height / 2) * 0.4;
-
-    const dx = playerCenterX - foodCenterX;
-    const dy = (playerCenterY - foodCenterY) * (playerRadiusX / playerRadiusY);
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    const isColliding = distance < playerRadiusX + foodRadiusX;
-
-    if (isColliding && !player.isInvincible && food.isDamage) {
+    if (
+      distSq < radiusSum * radiusSum &&
+      !player.isInvincible &&
+      food.isDamage
+    ) {
       showGameOver();
       break;
     }
@@ -116,7 +118,7 @@ export function update() {
   }
 }
 
-// ゲームループ
+// --- ゲームループ ---
 export function gameLoop() {
   if (loopId) cancelAnimationFrame(loopId);
   const loop = () => {
@@ -127,12 +129,12 @@ export function gameLoop() {
   loop();
 }
 
-// ゲームループ停止
+// --- ゲームループ停止 ---
 export function stopGameLoop() {
   if (loopId) cancelAnimationFrame(loopId);
 }
 
-// 開始
+// --- 開始 ---
 export function startGameLoop() {
   initPlayer();
   gameLoop();

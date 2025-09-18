@@ -1,8 +1,6 @@
-// =======================
 // グローバル配列
 export const foods = [];
 
-// =======================
 // 各フードデータ
 export const foodData = [
   { speed: 5, char: "🍇", size: 40, isDamage: true },
@@ -13,16 +11,10 @@ export const foodData = [
 
 const sweetPotatoData = { speed: 4, char: "🍠", size: 68, isDamage: true };
 const appleData = { speed: 7, char: "🍎", size: 75, isDamage: true };
-const bikiniData = { speed: 3, char: "👙", size: 50, isDamage: false }; // 無害フード（光らない）
-const pumpkinPieData = { speed: 2, char: "🥧", size: 80, isDamage: true }; // パンプキンパイ、大きめ遅め
-const absurdData = {
-  speed: 2,
-  char: "世の理不尽",
-  size: 80,
-  isDamage: true,
-}; // ごく僅か
+const bikiniData = { speed: 3, char: "👙", size: 50, isDamage: false };
+const pumpkinPieData = { speed: 2, char: "🥧", size: 80, isDamage: true };
+const absurdData = { speed: 2, char: "世の理不尽", size: 80, isDamage: true };
 
-// =======================
 // 基底クラス（光るフード）
 class Food {
   constructor(data, canvas, elapsedSeconds) {
@@ -33,7 +25,7 @@ class Food {
     this.x = Math.random() * Math.max(0, canvas.width - this.width);
     this.y = -this.height;
     this.glowPhase = Math.random() * Math.PI * 2;
-    this.isDamage = data.isDamage !== undefined ? data.isDamage : true;
+    this.isDamage = data.isDamage ?? true;
 
     // 30秒経過後に揺れる
     if (elapsedSeconds >= 30) {
@@ -48,7 +40,7 @@ class Food {
   move() {
     this.y += this.speed;
     if (this.swayAmplitude > 0) {
-      this.x += Math.sin(this.swayPhase) * 0.5; // ゆらゆら
+      this.x += Math.sin(this.swayPhase) * 0.5;
       this.swayPhase += 0.05;
     }
   }
@@ -57,7 +49,6 @@ class Food {
     const cx = this.x + this.width / 2;
     const cy = this.y + this.height / 2;
     const fontSize = Math.floor(this.width * 0.8);
-
     const glowOffset = Math.sin(this.glowPhase) * 2;
     this.glowPhase += 0.1;
 
@@ -66,7 +57,6 @@ class Food {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    // 光る演出
     ctx.shadowColor = "#FF69B4";
     ctx.shadowBlur = 8 + glowOffset;
     ctx.lineWidth = 2;
@@ -75,12 +65,10 @@ class Food {
     ctx.strokeText(this.char, cx, cy);
     ctx.fillStyle = "white";
     ctx.fillText(this.char, cx, cy);
-
     ctx.restore();
   }
 }
 
-// =======================
 // ビキニクラス（光らない）
 class BikiniFood {
   constructor(data, canvas) {
@@ -90,7 +78,7 @@ class BikiniFood {
     this.height = data.size;
     this.x = Math.random() * Math.max(0, canvas.width - this.width);
     this.y = -this.height;
-    this.isDamage = data.isDamage !== undefined ? data.isDamage : false;
+    this.isDamage = data.isDamage ?? false;
   }
 
   move() {
@@ -106,21 +94,15 @@ class BikiniFood {
     ctx.font = `${fontSize}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "white"; // 光なし
+    ctx.fillStyle = "white";
     ctx.fillText(this.char, cx, cy);
     ctx.restore();
   }
 }
 
-// =======================
 // 特殊フードクラス（光るフード）
-class SpecialFood extends Food {
-  constructor(data, canvas, elapsedSeconds) {
-    super(data, canvas, elapsedSeconds);
-  }
-}
+class SpecialFood extends Food {}
 
-// =======================
 // フード生成
 export function spawnFood(canvas, elapsedSeconds) {
   let spawnAmount = 2;
@@ -134,9 +116,9 @@ export function spawnFood(canvas, elapsedSeconds) {
     if (Math.random() < 0.005) {
       food = new SpecialFood(absurdData, canvas, elapsedSeconds);
     } else if (elapsedSeconds >= 20 && Math.random() < 0.1) {
-      food = new SpecialFood(pumpkinPieData, canvas, elapsedSeconds); // パンプキンパイ🥧
+      food = new SpecialFood(pumpkinPieData, canvas, elapsedSeconds);
     } else if (elapsedSeconds >= 20 && Math.random() < 0.05) {
-      food = new BikiniFood(bikiniData, canvas); // 光らないビキニ
+      food = new BikiniFood(bikiniData, canvas);
     } else if (elapsedSeconds >= 53 && Math.random() < 0.15) {
       food = new SpecialFood(appleData, canvas, elapsedSeconds);
     } else if (elapsedSeconds >= 25 && Math.random() < 0.25) {
@@ -150,24 +132,20 @@ export function spawnFood(canvas, elapsedSeconds) {
   }
 }
 
-// =======================
 // フード描画
 export function drawFoods(ctx) {
   foods.forEach((food) => food.draw(ctx));
 }
 
-// =======================
 // フード移動
 export function moveFoods() {
   foods.forEach((food) => food.move());
 }
 
-// =======================
 // 衝突判定
 export function checkCollision(player, foods) {
   foods.forEach((food) => {
-    if (!food.isDamage) return; // 無害フードは無視
-
+    if (!food.isDamage) return;
     if (
       player.x < food.x + food.width &&
       player.x + player.width > food.x &&
@@ -180,7 +158,6 @@ export function checkCollision(player, foods) {
   });
 }
 
-// =======================
 // リセット（全フード消去）
 export function resetFoods() {
   foods.length = 0;

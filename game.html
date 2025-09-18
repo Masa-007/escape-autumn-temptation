@@ -158,6 +158,12 @@
     button { font-size: 16px; padding: 10px 25px; }
     #timerContainer { font-size: 32px; padding: 4px 10px; }
     #gameOver { font-size: 20px; padding: 20px 30px; }
+
+    /* スマホ時：キャンバスを画面高さの3分の2に */
+    canvas {
+      height: 66vh; /* 画面の約3分の2 */
+      width: auto;  /* アスペクト比維持 */
+    }
   }
 </style>
 </head>
