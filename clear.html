@@ -33,9 +33,10 @@
     z-index: 2;
   }
 
-  #img2 { top: 25%; max-width: 400px; width: 50%; }
-  #img3 { top: 40%; max-width: 400px; width: 50%; }
-  #img4 { top: 45%; max-width: 250px; width: 40%; }
+  #img2 { top: 25%; max-width: 400px; width: 50%; display:none; }
+  #img3 { top: 40%; max-width: 400px; width: 50%; display:none; }
+  #img4 { top: 45%; max-width: 250px; width: 40%; display:none; }
+
   #textBox {
     top: 65%;
     width: 80%;
@@ -57,6 +58,7 @@
     text-align: center;
     opacity: 0;
     z-index: 2;
+    display: none;
   }
 
   .decorText {
@@ -81,7 +83,6 @@
     transition: all 0.2s ease-in-out;
     width: 220px;
     text-align: center;
-    touch-action: manipulation;
   }
 
   #homeBtn { background: linear-gradient(135deg, #ff7e5f, #feb47b); color: white; }
@@ -91,9 +92,9 @@
 
   @media (max-width: 768px) {
     .fadeImage { width: 70%; max-width: 300px; }
-    #img2 { top: 20%; }
-    #img3 { top: 35%; }
-    #img4 { top: 70%; width: 60%; max-width: 200px; }
+    #img2 { top: 40%; }
+    #img3 { top: 55%; }
+    #img4 { top: 80%; width: 60%; max-width: 200px; }
     #textBox { font-size: 1rem; padding: 15px; top: 60%; }
     .decorText { font-size: 2rem; }
     .actionBtn { width: 70%; font-size: 16px; padding: 12px 20px; }
@@ -112,8 +113,8 @@
     <div id="thankText" class="decorText">GAME CLEAR!! <br>Thank you for playing!!</div>
     <button id="homeBtn" class="actionBtn">修行に戻る</button>
     <a id="shareLink" class="actionBtn" target="_blank"
-   href="https://twitter.com/intent/tweet?text=%E5%AE%8C%E5%85%A8%E3%82%AF%E3%83%AA%E3%82%A2%E3%81%97%E3%81%A6%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%92%E8%A6%B3%E3%81%9F!!%20%23ETA%20%23EscapeAutumnTemptation%20%23RUNTEQ%20%23%E3%83%9F%E3%83%8B%E3%82%A2%E3%83%97%E3%83%AA%0Ahttps://masa-007.github.io/escape-autumn-temptation/">Xで感想を共有する</a>
-
+      href="https://twitter.com/intent/tweet?text=%E5%AE%8C%E5%85%A8%E3%82%AF%E3%83%AA%E3%82%A2%E3%81%97%E3%81%A6%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%92%E8%A6%B3%E3%81%9F!!%20%23ETA%20%23EscapeAutumnTemptation%20%23RUNTEQ%20%23%E3%83%9F%E3%83%8B%E3%82%A2%E3%83%97%E3%83%AA%0Ahttps://masa-007.github.io/escape-autumn-temptation/">Xで感想を共有する</a>
+  </div>
 
   <canvas id="leafCanvas"></canvas>
 
@@ -212,6 +213,7 @@
         index++;
       } else {
         textBox.style.display = "none";
+        endContainer.style.display = "block";
         fadeIn(endContainer);
         fadeIn(homeBtn);
         fadeIn(shareLink);
@@ -238,6 +240,7 @@
     document.body.addEventListener("keydown", (e) => { if(e.key === "Enter") handleAdvance(e); });
 
     homeBtn.addEventListener("click", () => { window.location.href = "index.html"; });
+    homeBtn.addEventListener("touchend", () => { window.location.href = "index.html"; });
   </script>
 </body>
 </html>
