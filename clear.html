@@ -53,28 +53,28 @@
   /* ===================== 最後のボタンコンテナ ===================== */
   #endContainer {
     position: fixed;
-    top: 60%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    text-align: center;
-    opacity: 0;
-    z-index: 2;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px; /* ボタン間の余白 */
+    justify-content: center;
+    gap: 30px; /* ボタン間隔を広めに */
+    opacity: 0;
+    z-index: 2;
   }
 
   .decorText {
     font-family: 'Brush Script MT', cursive;
     color: #ffd700;
     font-size: 3rem;
-    margin-bottom: 30px;
+    text-align: center;
     text-shadow: 3px 3px 7px #000;
   }
 
   .actionBtn {
-    display: none;
+    display: block;
     padding: 15px 35px;
     font-size: 18px;
     font-weight: bold;
@@ -93,6 +93,7 @@
 
   .actionBtn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
 
+  /* ===================== スマホ用 ===================== */
   @media (max-width: 768px) {
     .fadeImage { width: 70%; max-width: 300px; }
     #img2 { top: 70%; }
@@ -101,8 +102,8 @@
     #textBox { font-size: 1rem; padding: 15px; top: 60%; }
     .decorText { font-size: 2rem; }
     #endContainer {
-      top: 65%;
-      gap: 12px;
+      top: 50%;
+      gap: 20px;
     }
     .actionBtn {
       width: 70%;
@@ -183,7 +184,6 @@
     }
     animateLights();
 
-    // =======================
     // ストーリー制御
     const textBox = document.getElementById("textBox");
     const endContainer = document.getElementById("endContainer");
@@ -225,27 +225,18 @@
       } else {
         // 最後の演出
         textBox.style.display = "none";
-        endContainer.style.display = "flex"; // flexで縦並び
+        endContainer.style.display = "flex";
         fadeIn(endContainer);
         fadeIn(homeBtn);
         fadeIn(shareLink);
       }
     }
 
-    // =======================
-    // タッチ/クリックとEnterキーでストーリー進行
     let touched = false;
-
     function handleAdvance(e) {
       if(e.target.tagName === "BUTTON" || e.target.tagName === "A") return;
-
-      if (e.type === "touchstart") {
-        touched = true;
-        e.preventDefault();
-      } else if (e.type === "click" && touched) {
-        touched = false;
-        return;
-      }
+      if (e.type === "touchstart") { touched = true; e.preventDefault(); }
+      else if (e.type === "click" && touched) { touched = false; return; }
       showStory();
     }
 
