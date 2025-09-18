@@ -11,7 +11,7 @@
     background: url("./assets/images/end1.png") no-repeat center center fixed;
     background-size: cover;
     overflow: hidden;
-    touch-action: manipulation; /* タッチ操作最適化 */
+    touch-action: manipulation;
   }
 
   #leafCanvas {
@@ -36,7 +36,18 @@
   #img2 { top: 25%; max-width: 400px; width: 50%; }
   #img3 { top: 40%; max-width: 400px; width: 50%; }
   #img4 { top: 45%; max-width: 250px; width: 40%; }
-  #textBox { top: 65%; width: 80%; max-width: 600px; padding: 20px 25px; background: rgba(0,0,0,0.6); color: #fff; font-size: 1.2rem; line-height: 1.6; border-radius: 15px; text-align: center; }
+  #textBox {
+    top: 65%;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px 25px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    border-radius: 15px;
+    text-align: center;
+  }
 
   #endContainer {
     position: fixed;
@@ -100,8 +111,9 @@
   <div id="endContainer">
     <div id="thankText" class="decorText">GAME CLEAR!! <br>Thank you for playing!!</div>
     <button id="homeBtn" class="actionBtn">修行に戻る</button>
-    <a id="shareLink" class="actionBtn" target="_blank">Xで感想を共有する</a>
-  </div>
+    <a id="shareLink" class="actionBtn" target="_blank"
+   href="https://twitter.com/intent/tweet?text=%E5%AE%8C%E5%85%A8%E3%82%AF%E3%83%AA%E3%82%A2%E3%81%97%E3%81%A6%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%92%E8%A6%B3%E3%81%9F!!%20%23ETA%20%23EscapeAutumnTemptation%20%23RUNTEQ%20%23%E3%83%9F%E3%83%8B%E3%82%A2%E3%83%97%E3%83%AA%0Ahttps://masa-007.github.io/escape-autumn-temptation/">Xで感想を共有する</a>
+
 
   <canvas id="leafCanvas"></canvas>
 
@@ -179,9 +191,9 @@
     textBox.innerHTML = story[0].text;
     textBox.style.opacity = 1;
 
-    function fadeIn(el) { 
+    function fadeIn(el) {
+      el.style.display = "block";
       el.style.opacity = 1;
-      if(el.tagName === "BUTTON" || el.tagName === "A") el.style.display = "block";
     }
     function fadeOut(el) { el.style.opacity = 0; }
 
@@ -200,27 +212,32 @@
         index++;
       } else {
         textBox.style.display = "none";
-        endContainer.style.opacity = 1;
+        fadeIn(endContainer);
         fadeIn(homeBtn);
         fadeIn(shareLink);
-        setTweetLink(); // X共有リンク生成
       }
     }
 
+    // =======================
     // タッチ/クリックとEnterキーでストーリー進行
-    function handleAdvance() { showStory(); }
+    let touched = false;
+
+    function handleAdvance(e) {
+      if (e.type === "touchstart") {
+        touched = true;
+        e.preventDefault();
+      } else if (e.type === "click" && touched) {
+        touched = false;
+        return;
+      }
+      showStory();
+    }
+
+    document.body.addEventListener("touchstart", handleAdvance, {passive: false});
     document.body.addEventListener("click", handleAdvance);
-    document.body.addEventListener("touchstart", handleAdvance);
-    document.body.addEventListener("keydown", (e) => { if(e.key === "Enter") handleAdvance(); });
+    document.body.addEventListener("keydown", (e) => { if(e.key === "Enter") handleAdvance(e); });
 
     homeBtn.addEventListener("click", () => { window.location.href = "index.html"; });
-
-    function setTweetLink() {
-      const text = "完全クリアしてエンディングを観た!!";
-      const hashtags = ["ETA","EscapeAutumnTemptation","RUNTEQ","ミニアプリ","https://masa-007.github.io/escape-autumn-temptation/"];
-      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=${encodeURIComponent(hashtags.join(','))}`;
-      shareLink.href = url;
-    }
   </script>
 </body>
 </html>
