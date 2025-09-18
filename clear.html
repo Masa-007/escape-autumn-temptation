@@ -50,6 +50,7 @@
     text-align: center;
   }
 
+  /* ===================== 最後のボタンコンテナ ===================== */
   #endContainer {
     position: fixed;
     top: 60%;
@@ -59,6 +60,9 @@
     opacity: 0;
     z-index: 2;
     display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* ボタン間の余白 */
   }
 
   .decorText {
@@ -71,7 +75,6 @@
 
   .actionBtn {
     display: none;
-    margin: 10px auto;
     padding: 15px 35px;
     font-size: 18px;
     font-weight: bold;
@@ -97,7 +100,15 @@
     #img4 { top: 56%; width: 60%; max-width: 200px; }
     #textBox { font-size: 1rem; padding: 15px; top: 60%; }
     .decorText { font-size: 2rem; }
-    .actionBtn { width: 70%; font-size: 16px; padding: 12px 20px; }
+    #endContainer {
+      top: 65%;
+      gap: 12px;
+    }
+    .actionBtn {
+      width: 70%;
+      font-size: 16px;
+      padding: 12px 20px;
+    }
   }
 </style>
 </head>
@@ -212,8 +223,9 @@
         fadeIn(textBox);
         index++;
       } else {
+        // 最後の演出
         textBox.style.display = "none";
-        endContainer.style.display = "block";
+        endContainer.style.display = "flex"; // flexで縦並び
         fadeIn(endContainer);
         fadeIn(homeBtn);
         fadeIn(shareLink);
@@ -225,7 +237,6 @@
     let touched = false;
 
     function handleAdvance(e) {
-      // ボタンやリンクは無視
       if(e.target.tagName === "BUTTON" || e.target.tagName === "A") return;
 
       if (e.type === "touchstart") {
