@@ -24,11 +24,12 @@
   <!-- フリップカード -->
   <div class="flip-card" id="flipCard">
     <div class="flip-card-inner">
+
       <!-- 遊び方（表） -->
       <div class="flip-card-front">
         <div class="flip-header">
           <h2>遊び方</h2>
-          <button class="flip-toggle" id="showInstructions">あらすじを読む ></button>
+          <button class="flip-toggle" id="showInstructions">あらすじを読む &gt;</button>
         </div>
         <ul>
           <li>左右の矢印キーでキャラクターを移動させます。</li>
@@ -43,7 +44,7 @@
       <div class="flip-card-back">
         <div class="flip-header">
           <h2>あらすじ</h2>
-          <button class="flip-toggle" id="showStoryBack">遊び方を読む ></button>
+          <button class="flip-toggle" id="showStoryBack">遊び方を読む &gt;</button>
         </div>
         <p>男は最強を目指していた。<br>
         食欲もまた、弱き己の心の敵だと信じていた。</p>
@@ -58,6 +59,7 @@
         <p>冷たい水が体を打ち、心を刺激する。滝の誘惑に耐え抜けば、<br>
         最強の心が手に入ると信じて。</p>
       </div>
+
     </div>
   </div>
 
@@ -71,12 +73,13 @@
     function startGame() {
       window.location.href = startButton.href;
     }
+
     document.body.addEventListener("keydown", (e) => {
-      if(e.key === "Enter") startGame();
+      if (e.key === "Enter") startGame();
     });
+
     startButton.addEventListener("click", startGame);
     startButton.addEventListener("touchstart", startGame);
-
 
     // フリップカード切替（クリック＋タッチ対応）
     function flipToBack() {
@@ -88,13 +91,30 @@
 
     showInstructionsBtn.addEventListener("click", flipToBack);
     showStoryBackBtn.addEventListener("click", flipToFront);
-
     showInstructionsBtn.addEventListener("touchstart", flipToBack);
     showStoryBackBtn.addEventListener("touchstart", flipToFront);
 
     // スマホでタップしてもテキスト選択やズームが起きないように
     document.body.style.touchAction = "manipulation";
   </script>
+
+  <!-- フッター（固定） -->
+  <footer style="
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.9rem;
+    color: #666;
+    z-index: 1000;
+  ">
+    Created by 
+    <a href="https://x.com/masa007zz" target="_blank" style="color: inherit; text-decoration: none; font-weight: bold;">
+      @Masa-007
+    </a>
+  </footer>
 
 </body>
 </html>
