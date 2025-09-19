@@ -79,7 +79,7 @@
     opacity: 0;
   }
 
-  #endContainer .actionBtn + .actionBtn { margin-top: 20px; }
+  #endContainer .actionBtn, #endContainer #shareLink { margin-top: 15px; }
 
   .decorText {
     font-family: 'Brush Script MT', cursive;
@@ -107,16 +107,32 @@
   }
 
   #homeBtn { background: linear-gradient(135deg, #ff7e5f, #feb47b); color: white; }
-  #shareLink { background: linear-gradient(135deg, #4c6ef5, #15aabf); color: white; }
+  #shareLink { 
+    background: linear-gradient(135deg, #1DA1F2, #0d8ddb); 
+    color: white; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 220px;
+    padding: 15px 35px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+  }
 
-  .actionBtn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+  .actionBtn:hover, #shareLink:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
 
   @media (max-width: 768px) {
     .fadeImage, #textBox { width: 90%; max-width: 300px; }
     #textBox { font-size: 1rem; padding: 15px; min-height: 150px; }
     .decorText { font-size: 2rem; margin-bottom: 20px; }
-    #endContainer .actionBtn + .actionBtn { margin-top: 15px; }
-    .actionBtn { width: 70%; font-size: 16px; padding: 12px 20px; }
+    #endContainer .actionBtn, #endContainer #shareLink { margin-top: 12px; }
+    .actionBtn, #shareLink { width: 70%; font-size: 16px; padding: 12px 20px; }
   }
 </style>
 </head>
@@ -134,7 +150,7 @@
 <div id="endContainer">
   <div id="thankText" class="decorText">GAME CLEAR!! <br>Thank you for playing!!</div>
   <button id="homeBtn" class="actionBtn">修行に戻る</button>
-  <a href="https://twitter.com/intent/tweet?text=%E5%AE%8C%E5%85%A8%E3%82%AF%E3%83%AA%E3%82%A2%E3%81%97%E3%81%A6%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%92%E8%A6%B3%E3%81%9F!!%20%23EAT%20%23EscapeAutumnTemptation%20%23RUNTEQ%20%23%E3%83%9F%E3%83%8B%E3%82%A2%E3%83%97%E3%83%AAWeek%0Ahttps://masa-007.github.io/escape-autumn-temptation/">Xで感想を共有する</a>
+  <a id="shareLink" href="https://twitter.com/intent/tweet?text=%E5%AE%8C%E5%85%A8%E3%82%AF%E3%83%AA%E3%82%A2%E3%81%97%E3%81%A6%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%92%E8%A6%B3%E3%81%9F!!%20%23EAT%20%23EscapeAutumnTemptation%20%23RUNTEQ%20%23%E3%83%9F%E3%83%8B%E3%82%A2%E3%83%97%E3%83%AAWeek%0Ahttps://masa-007.github.io/escape-autumn-temptation/">Xで感想を共有する</a>
 </div>
 
 <script>
@@ -157,11 +173,11 @@
   const shareLink = document.getElementById("shareLink");
   const story=[
     {text:"*Enterキーorタッチで進めてください。",img:null},
-    {text:"滝に打たれていたはずの男は気がつくと、木漏れ日の中にいた。<br>「ここが神の境地なのか…?」<br>男は目を瞑りながらつぶやいた。",img:null},
+    {text:"滝に打たれていたはずの男は気がつくと、木漏れ日の中にいた。<br>「これが欲を超えた世界なのか…?」<br>男は突然の静けさを肌身に感じ、目を瞑りながらつぶやいた。",img:null},
     {text:"秋の味覚を超えた男は神の境地へと至っていた。<br>ここには何の欲も存在しない。静寂だけがそこに息づいていた。",img:"img2"},
     {text:"ついに目を開けると、そこにはバスケットに入った<br>赤々と神々しく輝く1粒のリンゴがあった。",img:"img3"},
     {text:"男はフッと笑った。<br>そしてりんごを手に取り、一口かじった。",img:"img4"},
-    {text:"「ああ、これが秋の味覚か、こんなに美味いとはな。<br>チッ、なぁんだ。また修行のやり直しだぜ。」<br>男はそう言って微笑んだ。",img:null}
+    {text:"「ああ、これが秋の味覚か、なぁんだ。こんなに美味いとはな。<br>チッ、また修行のやり直しだぜ。」<br>男はそう言って微笑んだ。",img:null}
   ];
 
   let index = 0;
