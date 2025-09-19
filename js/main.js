@@ -29,9 +29,9 @@ function getComment(elapsed) {
   if (elapsed < 20)
     return "[なんだコイツ!?]<br>👀<br>👃<br>👄<br>誰かが仲間になりたそうな顔でこちらもみている";
   if (elapsed < 30)
-    return "[イメトレ級!]<br>天の声<br>しっかりせい!!<br>焼き芋くわえたまま気絶しとるぞ!！🍠";
+    return "[イメトレ級!]<br>天の声<br>「しっかりせい!!<br>焼き芋くわえたまま気絶しとるぞ!！🍠」";
   if (elapsed < 40)
-    return "[妄想プロ級!]<br>天の声<br>運ゲー??<br>運は実力でもぎ取るもんじゃよ??<br>果物だけにのｯ!!🍇";
+    return "[妄想プロ級!]<br>天の声<br>「運ゲー??<br>運は実力でもぎ取るもんじゃよ??<br>果物だけにのｯ!!🍇」";
   if (elapsed < 50)
     return "[インハイ級!!]<br>不覚!!<br>志半ばでりんごに手を出してしまうとはｯ!!🍎";
   if (elapsed < 60)
