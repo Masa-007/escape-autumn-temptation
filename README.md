@@ -1,4 +1,4 @@
-# ETA （Escape Autumn Temptation） 🍂🎮
+# EAT （Escape Autumn Temptation） 🍂🎮
 
 秋の食欲の誘惑から逃げる脱出ゲーム
 
