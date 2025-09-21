@@ -72,11 +72,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    display: flex;
+    display: none; /* ← 初期は非表示 */
     flex-direction: column;
     align-items: center;
     z-index: 3;
     opacity: 0;
+    transition: opacity 0.8s ease;
   }
 
   #endContainer .actionBtn, #endContainer #shareLink { margin-top: 15px; }
@@ -225,7 +226,8 @@
       setTimeout(()=>{
         textBox.style.display = "none";
         if(lastImg) lastImg.style.display = "none";
-        endContainer.style.opacity = 1;
+        endContainer.style.display = "flex";   // ← 表示にする
+        setTimeout(()=>{ endContainer.style.opacity = 1; }, 50); // ← フェードイン
       }, 800);
       waitingForFinalClick = false;
       return;
