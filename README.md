@@ -10,7 +10,7 @@
 - CSS → デザイン・レイアウト
 - JavaScript (ES6 Modules) → ゲームロジック、ストーリー進行、アニメーション、タッチ操作、BGM制御など
 - ChatGPT
-- BGM:SUDO AI
+- BGM:SUNO AI
 - 背景画像:Canva AI
 - Google Analytics
 - Docker
